@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  postgres:
+    ports:
+      - '5432:5432'
+  rabbitmq:
+    image: rabbitmq:3.6.10-management
+    ports:
+      - '15672:15672'
+  transmission:
+    ports:
+      - '9091:9091'
+  app:
+    command: gunicorn --bind 0.0.0.0:8000 --reload kuzgun.wsgi
+    ports:
+      - '8000:8000'
+    environment:
+      DEBUG: 'true'

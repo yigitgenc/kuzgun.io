@@ -1,0 +1,79 @@
+version: '2'
+
+volumes:
+  database:
+    driver: local
+  cache:
+    driver: local
+  queue:
+    driver: local
+  torrent:
+    driver: local
+  static:
+    driver: local
+
+services:
+  nginx:
+    restart: always
+    image: nginx:1.13.3
+    volumes:
+      - 'torrent:/torrents'
+      - 'static:/static'
+      - './config/nginx/conf.d:/etc/nginx/conf.d'
+      - './config/nginx/nginx.conf:/etc/nginx/nginx.conf'
+    ports:
+      - '80:80'
+    environment:
+      - TZ
+  postgres:
+    restart: always
+    image: postgres:9.6.3
+    volumes:
+      - 'database:/var/lib/postgresql/data'
+    expose:
+      - '5432'
+  rabbitmq:
+    restart: always
+    image: rabbitmq:3.6.10
+    volumes:
+      - 'queue:/var/lib/rabbitmq'
+    expose:
+      - '5672'
+  redis:
+    restart: always
+    image: redis:4.0.1
+    volumes:
+      - 'cache:/data'
+    expose:
+      - '6379'
+  transmission:
+    restart: always
+    image: linuxserver/transmission:76
+    volumes:
+      - 'torrent:/downloads'
+      - './config/transmission/settings.json:/config/settings.json'
+    expose:
+      - '9091'
+    environment:
+      - PUID=0
+      - GUID=0
+  app:
+    command: gunicorn --bind 0.0.0.0:8000 kuzgun.wsgi
+    extends:
+      file: common-services.yml
+      service: app
+  worker_1:
+    command: celery -A kuzgun worker -l info -Q torrents.update_and_save_information --autoscale=6,2
+    extends:
+      file: common-services.yml
+      service: app
+  worker_2:
+    command: celery -A kuzgun worker -l info -Q torrents.update_and_stop_seeding --autoscale=6,2
+    extends:
+      file: common-services.yml
+      service: app
+  worker_3:
+    command: celery -A kuzgun worker -l info -Q files.convert_to_mp4 --autoscale=12,4
+    extends:
+      file: common-services.yml
+      service: app

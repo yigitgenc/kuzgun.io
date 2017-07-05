@@ -1,0 +1,5 @@
+.idea/
+.ipython/
+.bash_history
+.env
+__pycache__

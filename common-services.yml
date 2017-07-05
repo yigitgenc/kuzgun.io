@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  app:
+    build: .
+    restart: always
+    volumes:
+      - 'torrent:/torrents'
+      - './src/:/app'
+      - 'static:/static'
+    environment:
+      - SECRET_KEY
+      - TZ
