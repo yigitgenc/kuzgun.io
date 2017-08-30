@@ -1,3 +1,8 @@
+"""
+Celery config.
+"""
+
+
 import os
 
 # Broker URL

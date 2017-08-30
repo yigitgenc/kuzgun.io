@@ -5,6 +5,9 @@ from rest_framework.views import exception_handler
 
 
 def custom_exception_handler(exc, context):
+    """
+    DRF's custom exception handler
+    """
     response = exception_handler(exc, context)
 
     if response is not None:
@@ -15,6 +18,12 @@ def custom_exception_handler(exc, context):
 
 
 def enum_to_dict(enum):
+    """
+    Convert enum object to dict.
+
+    :param enum: Enum
+    :return: dict
+    """
     return {
         'label': enum.label,
         'value': enum.value,
@@ -22,6 +31,12 @@ def enum_to_dict(enum):
 
 
 def unix_time_millis(dt):
+    """
+    Convert datetime (dt) object to unix timestamp milliseconds.
+
+    :param dt: datetime.datetime
+    :return: float
+    """
     naive = dt.replace(tzinfo=None)
     epoch = datetime.utcfromtimestamp(0)
     return (naive - epoch).total_seconds()

@@ -3,6 +3,10 @@ from django.db import models
 
 
 class MyUser(AbstractUser):
+    """
+    MyUser model that extends AbstractUser. Uses Django's built-in auth model.
+    Torrent and File objects can be linked to this model through ManyToMany.
+    """
     torrents = models.ManyToManyField('torrents.Torrent')
     files = models.ManyToManyField('files.File')
 

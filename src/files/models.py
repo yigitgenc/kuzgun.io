@@ -13,6 +13,10 @@ MP4_STATUS_HASH = 'file:{}:mp4_status'
 
 
 class File(TimeStampedModel):
+    """
+    File model that keeps files independently.
+    Can be linked to Torrent and User through ManyToMany.
+    """
     volume = EnumField(Volume, max_length=20)
     path = models.FilePathField(max_length=255, unique=True)
     name = models.CharField(max_length=100)
@@ -24,6 +28,9 @@ class File(TimeStampedModel):
         ordering = ('-id',)
 
     def __init__(self, *args, **kwargs):
+        """
+        Set name, ext and content_type (if possible) automatically initialize by path.
+        """
         super(File, self).__init__(*args, **kwargs)
         pieces = os.path.splitext(os.path.basename(str(self.path)))
         self.name, self.ext = pieces[0], pieces[1][1:]
@@ -34,14 +41,30 @@ class File(TimeStampedModel):
 
     @property
     def file_name(self):
+        """
+        Returns file name.
+
+        :return: str
+        """
         return '{}.{}'.format(self.name, self.ext)
 
     @property
     def full_path(self):
+        """
+        Returns full path if volume is set.
+        Volume control for Django admin (add) to avoid raising exception on init.
+
+        :return: str
+        """
         return self.volume and '/{}/{}'.format(self.volume.value, self.path) or ''
 
     @property
     def mp4_status(self):
+        """
+        Returns file:{pk}:mp4_status hash from redis if set and a MP4 file.
+
+        :return: dict|bool
+        """
         if self.ext != 'mp4':
             return False
 
@@ -53,7 +76,13 @@ class File(TimeStampedModel):
         } if data else False
 
     def set_content_type(self):
+        """
+        Sets content_type
+        """
         self.content_type = mimetypes.guess_type(self.full_path)
 
     def set_size(self):
+        """
+        Sets size
+        """
         self.size = os.path.getsize(self.full_path)

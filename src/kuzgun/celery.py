@@ -1,3 +1,7 @@
+"""
+Celery app initialization for kuzgun.io.
+"""
+
 import os
 
 from celery import Celery

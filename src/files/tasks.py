@@ -18,6 +18,16 @@ logger = get_task_logger(__name__)
 
 @app.task(serializer='json')
 def convert_to_mp4(file_id, **kwargs):
+    """
+    This task duplicates File object itself, saves it as MP4 file object with empty size
+    and right after opens process to execute ffprobe and ffmpeg. FFprobe gets info so
+    we can get the duration. FFmpeg converts given file to MP4. Giving non-blocking
+    IO flag to process allowing us to get completed conversion time in seconds.
+
+    :param file_id: int
+    :param kwargs: {'torrent_ids': list}
+    :return: None
+    """
     f = File.objects.get(pk=file_id)
     f_mp4 = File.objects.create(volume=f.volume, path='{}.mp4'.format(os.path.splitext(f.path)[0]))
 
@@ -48,7 +58,7 @@ def convert_to_mp4(file_id, **kwargs):
     fcntl(proc.stdout, F_SETFL, flags | os.O_NONBLOCK)
 
     while proc.poll() is None:
-        time.sleep(0.25)  # 250 milliseconds of a second (1/4).
+        time.sleep(0.25)  # Let's don't upset our CPU. Sleep 250 milliseconds of a second (1/4).
         line = proc.stdout.readline()
 
         time_search = re.search(b'(time=)(\d+):(\d+):(\d+)', line)

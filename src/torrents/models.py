@@ -8,6 +8,10 @@ from .enums import Status
 
 
 class Torrent(TimeStampedModel):
+    """"
+    Torrent model that keeps torrents independently.
+    Can be linked to User through ManyToMany.
+    """
     name = models.CharField(max_length=150)
     hash = models.CharField(max_length=40, unique=True, db_index=True)
     status = EnumField(Status, max_length=20, default=Status.IN_QUEUE)

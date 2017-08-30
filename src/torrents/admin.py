@@ -4,6 +4,9 @@ from .models import Torrent
 
 
 class TorrentAdmin(admin.ModelAdmin):
+    """
+    Django admin page for Torrent model.
+    """
     model = Torrent
     list_display = ('name', 'hash')
     readonly_fields = ('hash', )

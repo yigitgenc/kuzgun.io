@@ -17,15 +17,29 @@ from .models import File, FILE_HASH
 from .tasks import convert_to_mp4
 from .serializers import FileSerializer
 
-VIDEO_EXTENSIONS = ('mkv', 'avi', 'mov', 'flv', 'wmv', 'mpg')
+# Only these video formats can be converted to MP4.
+# Current supports: MKV, AVI.
+VIDEO_EXTENSIONS = ('mkv', 'avi')
 
 
 class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet):
+    """
+    File API endpoint for File model. (/files).
+    Supported methods: Retrieve, List
+    """
     queryset = File.objects.all()
     serializer_class = FileSerializer
 
     @staticmethod
     def _parent_lookup(parent_lookup_torrent):
+        """
+        This static method tries to get torrent object if the request was came up
+        from parent lookup. (/torrents/) It raises a Http404 exception if it can't
+        find the torrent object.
+
+        :param parent_lookup_torrent: int
+        :return: Response
+        """
         if parent_lookup_torrent:
             torrent_model = get_object_or_404(Torrent, pk=parent_lookup_torrent)
 
@@ -36,9 +50,19 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
                 }, status=status.HTTP_400_BAD_REQUEST)
 
     def get_queryset(self):
+        """
+        Gets files queryset of the user.
+
+        :return: QuerySet
+        """
         return self.request.user.files.all()
 
     def list(self, request, parent_lookup_torrent=None, *args, **kwargs):
+        """
+        Lists files of the user.
+
+        :return: Response
+        """
         parent_lookup = self._parent_lookup(parent_lookup_torrent)
 
         if parent_lookup:
@@ -47,6 +71,11 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
         return super(FileViewSet, self).list(request, *args, **kwargs)
 
     def retrieve(self, request, parent_lookup_torrent=None, *args, **kwargs):
+        """
+        Retrieve a file of the user.
+
+        :return: Response
+        """
         parent_lookup = self._parent_lookup(parent_lookup_torrent)
 
         if parent_lookup:
@@ -56,6 +85,13 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
 
     @detail_route()
     def convert(self, request, parent_lookup_torrent=None, pk=None):
+        """
+        Converts given file to MP4. Calls convert_to_mp4 task.
+        If extension can't be find in VIDEO_EXTENSIONS, already
+        started or in progress; will return (400) bad request.
+
+        :return: Response
+        """
         parent_lookup = self._parent_lookup(parent_lookup_torrent)
 
         if parent_lookup:
@@ -98,6 +134,13 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
 
     @detail_route()
     def download(self, request, parent_lookup_torrent=None, pk=None):
+        """
+        Downloads or streams requested video of the file.
+        Redirects to protected path of the file over
+        Nginx with X-Accel-Redirect header.
+
+        :return: Response
+        """
         parent_lookup = self._parent_lookup(parent_lookup_torrent)
 
         if parent_lookup:

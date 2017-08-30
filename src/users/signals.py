@@ -6,5 +6,8 @@ from rest_framework.authtoken.models import Token
 
 @receiver(post_save, sender=get_user_model())
 def create_auth_token(**kwargs):
+    """
+    Creates token object right after User object created.
+    """
     if kwargs['created']:
         Token.objects.create(user=kwargs['instance'])

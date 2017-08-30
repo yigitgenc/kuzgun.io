@@ -9,6 +9,10 @@ from .serializers import UserSerializer
 
 
 class UserViewSet(UpdateModelMixin, GenericViewSet):
+    """
+    User API endpoint for User model. (/users).
+    Supported methods: Update
+    """
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
@@ -17,11 +21,21 @@ class UserViewSet(UpdateModelMixin, GenericViewSet):
 
     @list_route(methods=['GET'])
     def me(self, request):
+        """
+        Retrieves information of the user.
+
+        :return: Response
+        """
         user = get_object_or_404(self.queryset, pk=request.user.pk)
         serializer = self.get_serializer(user)
 
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
+        """
+        Partial update the user.
+
+        :return: super
+        """
         kwargs.update({'partial': True})
         return super(UserViewSet, self).update(request, *args, **kwargs)

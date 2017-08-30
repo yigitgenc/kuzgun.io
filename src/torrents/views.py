@@ -11,13 +11,28 @@ from .utils import transmission
 
 
 class TorrentViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin, DestroyModelMixin, GenericViewSet):
+    """
+    Torrent API endpoint for Torrent model (/torrents).
+    Supported methods: Create, Retrieve, List, Destroy
+    """
     queryset = Torrent.objects.all()
     serializer_class = TorrentSerializer
 
     def get_queryset(self):
+        """
+        Gets torrents queryset of the user.
+
+        :return: QuerySet
+        """
         return self.request.user.torrents.all()
 
     def create(self, request, *args, **kwargs):
+        """
+        Creates a Torrent object links it to the user.
+        Validates `url` query parameter whether is a magnet/torrent link or not.
+
+        :return: Response
+        """
         link = request.data.get('link', '').strip()
         url_validator = URLValidator()
 
@@ -46,6 +61,11 @@ class TorrentViewSet(CreateModelMixin, RetrieveModelMixin, ListModelMixin, Destr
         )
 
     def destroy(self, request, *args, **kwargs):
+        """
+        Un-links a torrent object from the user.
+
+        :return: Response
+        """
         torrent_model = self.get_object()
         self.request.user.torrents.remove(torrent_model)
 

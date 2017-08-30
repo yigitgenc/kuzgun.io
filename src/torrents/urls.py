@@ -1,3 +1,7 @@
+"""
+URL configuration for Torrent API endpoint.
+"""
+
 from rest_framework_extensions.routers import ExtendedDefaultRouter
 
 from files.views import FileViewSet

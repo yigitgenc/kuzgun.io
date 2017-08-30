@@ -14,7 +14,15 @@ logger = get_task_logger(__name__)
 
 @app.task(bind=True, serializer='pickle')
 def update_and_stop_seeding(self, torrent_model):
-    past = timezone.now() + timezone.timedelta(days=-1)
+    """
+    Checks the Torrent object every COUNTDOWN seconds and
+    stops the torrent from seeding if it's seeded more than 24 hours.
+
+    :param self: instance of @app.task
+    :param torrent_model: Torrent object
+    :return: None|AsyncResult
+    """
+    past = timezone.now() + timezone.timedelta(hours=-24)
     torrent = transmission.get_torrent(torrent_model.hash)
 
     if torrent_model.created < past:
@@ -40,6 +48,14 @@ def update_and_stop_seeding(self, torrent_model):
 
 @app.task(bind=True, serializer='pickle')
 def update_and_save_information(self, torrent_model):
+    """
+    Updates the Torrent object every COUNTDOWN seconds and stops
+    when the torrent finishes downloading.
+
+    :param self: instance of @app.task
+    :param torrent_model: Torrent object
+    :return: None|AsyncResult
+    """
     torrent = transmission.get_torrent(torrent_model.hash)
 
     torrent_model.status = Status(torrent.status)

@@ -1,3 +1,7 @@
+"""
+URL configuration for User API endpoint.
+"""
+
 from rest_framework.routers import DefaultRouter
 
 from .views import UserViewSet
