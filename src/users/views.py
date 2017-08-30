@@ -16,9 +16,6 @@ class UserViewSet(UpdateModelMixin, GenericViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
-    def get_queryset(self):
-        return self.queryset.filter(pk=self.request.user.pk)
-
     @list_route(methods=['GET'])
     def me(self, request):
         """
