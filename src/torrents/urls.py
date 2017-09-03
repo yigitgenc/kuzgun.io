@@ -12,7 +12,7 @@ router = ExtendedDefaultRouter()
 router.register(r'', TorrentViewSet).register(
     r'files',
     FileViewSet,
-    base_name='torrent-files',
+    base_name='torrent-file',
     parents_query_lookups=['torrent']
 )
 
