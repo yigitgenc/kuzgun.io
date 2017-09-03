@@ -13,5 +13,5 @@ urlpatterns = [
     url(r'^api/auth/token', obtain_auth_token),
     url(r'^api/users/', include('users.urls', namespace='users')),
     url(r'^api/torrents/', include('torrents.urls', namespace='torrents')),
-    url(r'^api/files/', include('files.urls'), name='files'),
+    url(r'^api/files/', include('files.urls', namespace='files')),
 ]
