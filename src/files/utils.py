@@ -9,9 +9,9 @@ def create_from_torrent(torrent):
     different purposes. For example: torrent.files.add(*files)
 
     :param torrent: Transmission torrent object
-    :return: list
+    :return: set
     """
-    files = list()
+    files = set()
 
     for _, item in torrent.files().items():
         path = item['name']
@@ -22,6 +22,6 @@ def create_from_torrent(torrent):
             defaults={'size': item['size']},
         )
 
-        files.append(f)
+        files.add(f)
 
     return files

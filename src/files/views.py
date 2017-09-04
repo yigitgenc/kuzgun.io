@@ -124,7 +124,7 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
             }, status=status.HTTP_400_BAD_REQUEST)
 
         if obj.volume == Volume.TORRENT:
-            convert_to_mp4.delay(obj.pk, torrent_ids=list(obj.torrent_set.values_list('pk', flat=True)))
+            convert_to_mp4.delay(obj.pk, torrent_ids=set(obj.torrent_set.values_list('pk', flat=True)))
         else:
             convert_to_mp4.delay(obj.pk)
 
