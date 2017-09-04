@@ -16,7 +16,7 @@ COUNTDOWN = 5  # seconds
 logger = get_task_logger(__name__)
 
 
-@app.task(serializer='json')
+@app.task
 def convert_to_mp4(file_id, **kwargs):
     """
     This task duplicates File object itself, saves it as MP4 file object with empty size

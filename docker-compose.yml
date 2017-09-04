@@ -63,17 +63,17 @@ services:
       file: common-services.yml
       service: app
   worker_1:
-    command: celery -A kuzgun worker -l info -Q torrents.update_and_save_information --autoscale=6,2
+    command: celery -A kuzgun.celery worker -l info -Q torrents.update_and_save_information --autoscale=6,2
     extends:
       file: common-services.yml
       service: app
   worker_2:
-    command: celery -A kuzgun worker -l info -Q torrents.update_and_stop_seeding --autoscale=6,2
+    command: celery -A kuzgun.celery worker -l info -Q torrents.update_and_stop_seeding --autoscale=6,2
     extends:
       file: common-services.yml
       service: app
   worker_3:
-    command: celery -A kuzgun worker -l info -Q files.convert_to_mp4 --autoscale=12,4
+    command: celery -A kuzgun.celery worker -l info -Q files.convert_to_mp4 --autoscale=12,4
     extends:
       file: common-services.yml
       service: app

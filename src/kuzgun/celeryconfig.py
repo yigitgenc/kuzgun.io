@@ -12,10 +12,13 @@ broker_url = 'amqp://guest:guest@rabbitmq:5672//'
 timezone = os.environ.get('TZ', 'GMT')
 
 # Accept content
-accept_content = ('application/x-python-serialize', 'application/json')
+accept_content = ('application/json',)
 
 # Worker max tasks per child
 worker_max_tasks_per_child = 1
+
+# Task serializer
+task_serializer = 'json'
 
 # Task ignore result
 task_ignore_result = True

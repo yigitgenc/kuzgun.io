@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 from files.models import File
 from .models import Torrent
-from .tasks import update_and_save_information
+from torrents.tasks import update_and_save_information
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ def apply_async_update_and_save_information(**kwargs):
     Calls update_and_save_information task right torrent created.
     """
     if kwargs['created']:
-        update_and_save_information.delay(kwargs['instance'])
+        update_and_save_information.delay(kwargs['instance'].pk)
 
 
 @receiver(m2m_changed, sender=Torrent.files.through)
