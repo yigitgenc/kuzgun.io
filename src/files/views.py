@@ -103,7 +103,7 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
             return Response({'detail': "Conversion not available for this file."}, status=status.HTTP_400_BAD_REQUEST)
 
         if redis.hget(FILE_HASH.format(obj.pk), 'conversion_started'):
-            return Response({'detail': "Conversion already started."})
+            return Response({'detail': "Conversion already started."}, status=status.HTTP_400_BAD_REQUEST)
 
         obj_mp4 = File.objects.filter(volume=obj.volume, name=obj.name, ext='mp4').first()
 
