@@ -75,14 +75,16 @@ class File(TimeStampedModel):
             'progress': data.get('progress', '0.00'),
         } if data else False
 
-    def set_content_type(self):
-        """
-        Sets content_type
-        """
-        self.content_type = mimetypes.guess_type(self.full_path)
-
     def set_size(self):
         """
         Sets size
         """
         self.size = os.path.getsize(self.full_path)
+
+    def exists_on_disk(self):
+        """
+        Detect file whether on the disk or not.
+
+        :return: bool
+        """
+        return os.path.isfile(self.full_path)

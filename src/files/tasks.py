@@ -73,8 +73,6 @@ def convert_to_mp4(file_id, **kwargs):
     redis.hset(MP4_STATUS_HASH.format(f_mp4.pk), 'progress', '100.00')
 
     f_mp4.set_size()
-    f_mp4.set_content_type()
-
     f_mp4.save()
 
     logger.info('{} finished converting to MP4.'.format(f))
