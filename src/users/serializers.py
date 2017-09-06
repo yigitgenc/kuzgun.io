@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -22,4 +21,4 @@ class UserSerializer(serializers.ModelSerializer):
         :param obj: User object
         :return: str
         """
-        return Token.objects.get(user__pk=obj.pk).key
+        return obj.auth_token.key
