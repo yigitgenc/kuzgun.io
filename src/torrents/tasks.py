@@ -26,8 +26,12 @@ def update_and_stop_seeding(self, torrent_id):
 
     try:
         torrent_model = Torrent.objects.get(pk=torrent_id)
-    except Torrent.DoesNotExist:
-        logger.info("Torrent (#{}) does not exist. It may be force deleted before it's completed.".format(torrent_id))
+    except Torrent.DoesNotExist as e:
+        logger.info(
+            "Torrent (#{}) does not exist. It may be force deleted before it's completed.".format(torrent_id),
+            exc_info=e
+        )
+        
         return
 
     past = timezone.now() + timezone.timedelta(hours=-24)
@@ -67,8 +71,12 @@ def update_and_save_information(self, torrent_id):
 
     try:
         torrent_model = Torrent.objects.get(pk=torrent_id)
-    except Torrent.DoesNotExist:
-        logger.info("Torrent (#{}) does not exist. It may be force deleted before it's completed.".format(torrent_id))
+    except Torrent.DoesNotExist as e:
+        logger.warn(
+            "Torrent (#{}) does not exist. It may be force deleted before it's completed.".format(torrent_id),
+            exc_info=e,
+        )
+
         return
 
     torrent = transmission.get_torrent(torrent_model.hash)
