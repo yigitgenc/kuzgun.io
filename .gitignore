@@ -1,5 +1,8 @@
+src/htmlcov/
+data/drop.mp4
 .idea/
 .ipython/
 .bash_history
+.coverage
 .env
 __pycache__

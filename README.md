@@ -1,12 +1,16 @@
 # kuzgun.io
+![Coverage Status](https://cdn.rawgit.com/yigitgenc/kuzgun.io/master/data/coverage.svg)
+
 Yours free dockerized online streaming software.
 
 ## Installation
+
 __kuzgun.io__ is designed to run on your server effortlessly.
 Only thing you have to do install [Docker](https://www.docker.com/what-docker) on 
 your server to build and run kuzgun.io and you are ready to go!
 
 ### Contents:
+
 * [Running on __Ubuntu 16.04__](#running-on-ubuntu-1604)
 
 #### Running on Ubuntu 16.04

@@ -9,5 +9,6 @@ transmissionrpc==0.11
 celery==4.0.2
 gunicorn==19.7.1
 coverage==4.4.1
+coverage-badge==0.2.0
 ipython==5.3.0
 ipdb==0.10.3

@@ -15,5 +15,7 @@ services:
     command: gunicorn --bind 0.0.0.0:8000 --reload kuzgun.wsgi
     ports:
       - '8000:8000'
+    volumes:
+      - './data:/torrents/complete/.test'
     environment:
       DEBUG: 'true'

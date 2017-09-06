@@ -6,8 +6,8 @@ services:
     restart: always
     volumes:
       - 'torrent:/torrents'
-      - './src/:/app'
       - 'static:/static'
+      - './src/:/app'
     environment:
       - SECRET_KEY
       - TZ
