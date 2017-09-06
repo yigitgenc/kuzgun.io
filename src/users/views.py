@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from rest_framework import status
 from rest_framework.decorators import list_route
 from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import UpdateModelMixin
@@ -35,4 +36,6 @@ class UserViewSet(UpdateModelMixin, GenericViewSet):
         :return: super
         """
         kwargs.update({'partial': True})
-        return super(UserViewSet, self).update(request, *args, **kwargs)
+        super(UserViewSet, self).update(request, *args, **kwargs)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
