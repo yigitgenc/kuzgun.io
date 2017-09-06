@@ -22,7 +22,7 @@ class File(TimeStampedModel):
     name = models.CharField(max_length=100)
     ext = models.CharField(max_length=5)
     content_type = models.CharField(max_length=20, null=True)
-    size = models.PositiveIntegerField(default=0)
+    size = models.BigIntegerField(default=0)
 
     class Meta:
         ordering = ('-id',)
