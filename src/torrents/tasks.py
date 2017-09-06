@@ -6,7 +6,7 @@ from kuzgun.celery import app
 from kuzgun.utils import redis
 from files.utils import create_from_torrent
 from .enums import Status
-from .models import Torrent
+from .models import Torrent, TORRENT_HASH
 from .utils import transmission
 
 COUNTDOWN = 5  # seconds
@@ -77,7 +77,7 @@ def update_and_save_information(self, torrent_id):
     torrent_model.progress = torrent.progress
     torrent_model.ratio = torrent.ratio
 
-    redis.hmset('torrent:{}'.format(torrent_model.pk), {
+    redis.hmset(TORRENT_HASH.format(torrent_model.pk), {
         'rate_upload': torrent.rateUpload,
         'rate_download': torrent.rateDownload
     })

@@ -6,6 +6,8 @@ from enumfields.fields import EnumField
 
 from .enums import Status
 
+TORRENT_HASH = 'torrent:{}'
+
 
 class Torrent(TimeStampedModel):
     """"
