@@ -12,7 +12,6 @@ from kuzgun.utils import redis
 from torrents.models import Torrent
 from .models import File, MP4_STATUS_HASH
 
-COUNTDOWN = 5  # seconds
 logger = get_task_logger(__name__)
 
 
