@@ -19,7 +19,7 @@ class Torrent(TimeStampedModel):
     status = EnumField(Status, max_length=20, default=Status.IN_QUEUE)
     progress = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     ratio = models.DecimalField(max_digits=3, decimal_places=2, default=0)
-    size = models.PositiveIntegerField(default=0)
+    size = models.BigIntegerField(default=0)
     files = models.ManyToManyField('files.File')
     finished = models.BooleanField(default=False)
     private = models.BooleanField(default=False)
