@@ -43,6 +43,12 @@ class File(TimeStampedModel):
         return '{} (#{})'.format(self.file_name, self.pk)
 
     def delete(self, using=None, keep_parents=False):
+        """
+        Deletes File object.
+        Overrides delete method because we have to delete file itself from the storage.
+
+        :return: super of File class.
+        """
         try:
             os.remove(self.full_path)
         except FileNotFoundError:
