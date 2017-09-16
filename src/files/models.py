@@ -1,4 +1,5 @@
 import os
+import logging
 import mimetypes
 
 from django.db import models
@@ -10,6 +11,8 @@ from .enums import Volume
 
 FILE_HASH = 'file:{}'
 MP4_STATUS_HASH = 'file:{}:mp4_status'
+
+logger = logging.getLogger(__name__)
 
 
 class File(TimeStampedModel):
@@ -38,6 +41,17 @@ class File(TimeStampedModel):
 
     def __str__(self):
         return '{} (#{})'.format(self.file_name, self.pk)
+
+    def delete(self, using=None, keep_parents=False):
+        try:
+            os.remove(self.full_path)
+        except FileNotFoundError:
+            logger.info(('File {} does not exist. May be force deleted from the storage. '
+                         'However {} object is being deleted.').format(
+                self.full_path, self.__str__()
+            ))
+
+        return super(File, self).delete(using=using, keep_parents=keep_parents)
 
     @property
     def file_name(self):
