@@ -1,0 +1,8 @@
+body {
+    background: url(../img/bg.png) repeat;
+}
+
+.wrapper {
+    width: 318px;
+    margin: 118px auto;
+}
