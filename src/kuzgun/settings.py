@@ -3,6 +3,8 @@ kuzgun.io settings.
 """
 
 import os
+from django.contrib import admin
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -62,7 +64,7 @@ ROOT_URLCONF = 'kuzgun.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['/app/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,3 +149,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static/'
+
+
+# Admin site settings
+admin.site.site_title = 'Kuzgun.io'
+admin.site.site_header = 'Kuzgun.io administration'

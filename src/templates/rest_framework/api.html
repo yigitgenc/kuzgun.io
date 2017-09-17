@@ -1,0 +1,11 @@
+{% extends "rest_framework/base.html" %}
+
+{% block title %}
+    {% if name %}{{ name }} – {% endif %}Kuzgun.io API
+{% endblock %}
+
+{% block branding %}
+    <a class='navbar-brand' rel="nofollow" href='http://kuzgun.io'>
+        Kuzgun.io API
+    </a>
+{% endblock %}
