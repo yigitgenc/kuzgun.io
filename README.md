@@ -3,18 +3,33 @@
 
 Yours free dockerized online streaming software.
 
-## Installation
+# Installation
 
 __kuzgun.io__ is designed to run on your server effortlessly.
 Only thing you have to do install [Docker](https://www.docker.com/what-docker) on 
 your server to build and run kuzgun.io.
 
-### Contents:
+## Contents:
 
 * [Running on __Ubuntu 16.04__](#running-on-ubuntu-1604)
+    * [Pre-requisites](#pre-requisites)
+    * [Setup](#setup)
 * [Running on __your computer__](#running-on-your-computer)
+    * [Installing](#installing)
+    * [Running](#running)
+    * [Debugging](#debugging)
+    * [Tests](#tests)
 
-#### Running on Ubuntu 16.04
+### Running on Ubuntu 16.04
+
+#### Pre-requisites
+
+* Ubuntu 16.04.
+* Docker
+* At least 1GB memory (swap can be used).
+* At least 5GB disk space. (make sure you have enough space to download things).
+
+#### Setup
 
 First, let's update and upgrade our packages. Also you have to install `software-properties-common`
 ```
@@ -95,9 +110,9 @@ $ Password (again): yourpassword
 You're all set! Go and login to the web app on the browser to start using `kuzgun.io` immediately: 
 `http://your_server_ip` or `http://yourdomainname.com`
 
-#### Running on your computer
+### Running on your computer
 
-##### Installing
+#### Installing
 
 Get Docker first:
 * <a href="https://download.docker.com/mac/stable/Docker.dmg" target="_blank">Docker CE for Mac</a>
@@ -112,7 +127,7 @@ And clone the repo by using `git`:
 $ git clone git@github.com:yigitgenc/kuzgun.io.git
 ```
 
-##### Running
+#### Running
 
 To build and run `kuzgun.io`, go to project's root directory and run the following commands respectively:
 ```
@@ -122,13 +137,13 @@ $ sudo docker-compose run --rm app python manage.py migrate
 $ sudo docker-compose run --rm app python manage.py collectstatic --noinput
 ```
 
-##### Debugging
+#### Debugging
 
 ```
 $ docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
 ```
 
-##### Tests
+#### Tests
 ```
 $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm app coverage run manage.py test --verbosity=2
 ```
