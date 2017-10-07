@@ -73,8 +73,11 @@ class FileViewSetTests(APITestCase):
         self.assertEqual(response.data.get('detail'), 'Conversion already started.')
 
     @patch('files.models.redis.hgetall')
-    def test_convert_endpoint_that_return_already_in_progress(self, mock_hgetall):
+    @patch('files.models.redis.hget')
+    def test_convert_endpoint_that_return_already_in_progress(self, mock_hget, mock_hgetall):
         url = reverse('files:file-convert', args=[self.file.pk])
+
+        mock_hget.return_value = False
         mock_hgetall.return_value = {
             'duration': 6,
             'progress': '78.53'
@@ -87,8 +90,11 @@ class FileViewSetTests(APITestCase):
         self.assertEqual(response.data.get('progress'), '78.53')
 
     @patch('files.models.redis.hgetall')
-    def test_convert_endpoint_that_return_already_have(self, mock_hgetall):
+    @patch('files.models.redis.hget')
+    def test_convert_endpoint_that_return_already_have(self, mock_hget, mock_hgetall):
         url = reverse('files:file-convert', args=[self.file.pk])
+
+        mock_hget.return_value = False
         mock_hgetall.return_value = False
 
         response = self.client.get(url)
@@ -97,8 +103,11 @@ class FileViewSetTests(APITestCase):
         self.assertEqual(response.data.get('detail'), 'There is already a MP4 version of this file.')
 
     @patch('files.models.redis.hgetall')
-    def test_convert_endpoint_that_return_completed(self, mock_hgetall):
+    @patch('files.models.redis.hget')
+    def test_convert_endpoint_that_return_completed(self, mock_hget, mock_hgetall):
         url = reverse('files:file-convert', args=[self.file.pk])
+
+        mock_hget.return_value = False
         mock_hgetall.return_value = {
             'duration': 6,
             'progress': '100.00'
@@ -112,8 +121,11 @@ class FileViewSetTests(APITestCase):
 
     @patch('files.views.convert_to_mp4.delay')
     @patch('files.views.redis.hset')
-    def test_convert_endpoint_that_return_success(self, mock_hset, mock_convert_to_mp4_delay):
+    @patch('files.views.redis.hget')
+    def test_convert_endpoint_that_return_success(self, mock_hget, mock_hset, mock_convert_to_mp4_delay):
         self.file_mp4.delete()
+
+        mock_hget.return_value = False
 
         url = reverse('files:file-convert', args=[self.file.pk])
         response = self.client.get(url)
