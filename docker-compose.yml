@@ -48,15 +48,15 @@ services:
       - '6379'
   transmission:
     restart: always
-    image: linuxserver/transmission:76
+    image: linuxserver/transmission:89
     volumes:
       - 'torrent:/downloads'
       - './config/transmission/settings.json:/config/settings.json'
     expose:
       - '9091'
     environment:
-      - PUID=0
-      - GUID=0
+      - PUID=1337
+      - PGID=1337
   app:
     command: gunicorn --bind 0.0.0.0:8000 kuzgun.wsgi
     extends:
