@@ -24,10 +24,10 @@ your server to build and run kuzgun.io.
 
 #### Pre-requisites
 
-* Ubuntu 16.04.
+* Ubuntu 16.04
 * Docker
-* At least 1GB memory (swap can be used).
-* At least 5GB disk space. (make sure you have enough space to download things).
+* At least 1GB memory. (swap can be used)
+* At least 5GB disk space. (make sure you have enough space to download things)
 
 #### Setup
 
