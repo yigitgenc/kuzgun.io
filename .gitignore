@@ -1,8 +1,8 @@
 src/htmlcov/
+src/.ash_history
 data/drop.mp4
 .idea/
 .ipython/
-.bash_history
 .coverage
 .env
 __pycache__
