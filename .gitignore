@@ -1,8 +1,13 @@
 src/htmlcov/
 src/.ash_history
+node_modules/
 data/drop.mp4
+.vscode/
 .idea/
 .ipython/
 .coverage
 .env
 __pycache__
+.eslintrc
+.stylelintrc
+tslint.json

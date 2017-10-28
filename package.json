@@ -1,0 +1,54 @@
+{
+    "name": "kuzgun.io",
+    "version": "1.0.0",
+    "description": "Yours free dockerized online streaming software",
+    "main": "src/static/kuzgun/app/app.js",
+    "scripts": {
+        "build": "webpack-dev-server --open --config webpack.dev.js",
+        "release": "webpack -p --config webpack.prod.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yigitgenc/kuzgun.io.git"
+    },
+    "author": "Yasar Yildiz",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/yigitgenc/kuzgun.io/issues"
+    },
+    "homepage": "https://github.com/yigitgenc/kuzgun.io#readme",
+    "dependencies": {
+        "@angular/common": "^4.4.6",
+        "@angular/core": "^4.4.6",
+        "@angular/platform-browser": "^4.4.6",
+        "@ngrx/store": "^4.0.3",
+        "rxjs": "^5.4.3",
+        "zone.js": "^0.8.18"
+    },
+    "devDependencies": {
+        "ajv": "^5.3.0",
+        "chai": "^4.1.2",
+        "clean-webpack-plugin": "^0.1.17",
+        "css-loader": "^0.28.7",
+        "cssnano": "^3.10.0",
+        "file-loader": "^1.1.5",
+        "html-loader": "^0.5.1",
+        "html-webpack-plugin": "^2.30.1",
+        "karma": "^1.7.1",
+        "karma-chai": "^0.1.0",
+        "karma-mocha": "^1.3.0",
+        "karma-webpack": "^2.0.5",
+        "mocha": "^4.0.1",
+        "node-sass": "^4.5.3",
+        "oldie": "^1.3.0",
+        "postcss-cssnext": "^3.0.2",
+        "postcss-loader": "^2.0.8",
+        "sass-loader": "^6.0.6",
+        "style-loader": "^0.19.0",
+        "ts-loader": "^3.0.5",
+        "typescript": "^2.5.3",
+        "webpack": "^3.8.1",
+        "webpack-dev-server": "^2.9.3",
+        "webpack-merge": "^4.1.0"
+    }
+}
