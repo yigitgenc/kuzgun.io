@@ -140,7 +140,7 @@ $ sudo docker-compose run --rm app python manage.py collectstatic --noinput
 #### Debugging
 
 ```
-$ docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
+$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 ```
 
 #### Tests
