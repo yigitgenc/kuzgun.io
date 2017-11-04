@@ -4,7 +4,7 @@
     "description": "Yours free dockerized online streaming software",
     "main": "src/static/kuzgun/app/app.js",
     "scripts": {
-        "build": "webpack-dev-server --open --config webpack.dev.js",
+        "build": "webpack-dev-server --config webpack.dev.js",
         "release": "webpack -p --config webpack.prod.js"
     },
     "repository": {

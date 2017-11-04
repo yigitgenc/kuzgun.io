@@ -15,14 +15,14 @@ module.exports = {
 		]
 	},
     output: {
-        filename: '[name]/[name].bundle.js',
-        path: path.resolve(__dirname, 'src/static/dist')
+        filename: 'static/dist/[name].bundle.js',
+        path: path.resolve(__dirname, 'src')
     },
     plugins: [
         new CleanWebpackPlugin(['./src/static/dist/', './src/templates/kuzgun/']),
         new HtmlWebpackPlugin({
-            filename: '../.././templates/kuzgun/login.html',
-            template: './src/static/app/module/login/login.html',
+            filename: './templates/kuzgun/login.html',
+            template: './src/static/app/module/login/index.html',
             chunks: ['login']
         })
     ],
