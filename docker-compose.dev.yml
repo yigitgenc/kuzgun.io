@@ -12,7 +12,7 @@ services:
     ports:
       - '9091:9091'
   app:
-    command: gunicorn --bind 0.0.0.0:8000 --reload kuzgun.wsgi
+    command: gunicorn --bind 0.0.0.0:8000 --timeout 1800 --reload kuzgun.wsgi
     volumes:
       - './data:/torrents/complete/.test'
     environment:
