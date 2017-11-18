@@ -11,6 +11,8 @@ volumes:
     driver: local
   static:
     driver: local
+  upload:
+    driver: local
 
 services:
   nginx:

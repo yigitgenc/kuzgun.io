@@ -155,6 +155,11 @@ STATICFILES_DIRS = [
 ]
 
 
+# Media files
+
+MEDIA_ROOT = '/uploads/'
+
+
 # Admin site settings
 admin.site.site_title = 'Kuzgun.io'
 admin.site.site_header = 'Kuzgun.io administration'
