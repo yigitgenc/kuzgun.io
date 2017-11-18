@@ -25,3 +25,16 @@ def create_from_torrent(torrent):
         files.add(f)
 
     return files
+
+
+def handle_uploaded_file(uploaded_file_obj, full_path):
+    """
+    Moves uploaded file object to the destination (full_path).
+
+    :param uploaded_file_obj: InMemoryUploadedFile|UploadedFile object.
+    :param full_path: str: Full path of the file object.
+    :return: None
+    """
+    with open(full_path, 'wb+') as destination:
+        for chunk in uploaded_file_obj.chunks():
+            destination.write(chunk)

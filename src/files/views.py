@@ -1,10 +1,13 @@
+import os
 from hashlib import sha1
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.http import http_date
+from django.utils.text import slugify
 from rest_framework import status
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
@@ -16,6 +19,7 @@ from .enums import Volume
 from .models import File, FILE_HASH
 from .tasks import convert_to_mp4
 from .serializers import FileSerializer
+from .utils import handle_uploaded_file
 
 # Only these video formats can be converted to MP4.
 # Current supports: MKV, AVI.
@@ -29,6 +33,7 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
     """
     queryset = File.objects.all()
     serializer_class = FileSerializer
+    parser_classes = (FileUploadParser,)
 
     @staticmethod
     def _parent_lookup(parent_lookup_torrent):
@@ -168,3 +173,41 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
         response['Content-Length'] = obj.size
 
         return response
+
+    @list_route(['post'])
+    def upload(self, request, parent_lookup_torrent=None):
+        """
+        Handles sent file, creates File object,
+        chunks and writes it into Volume.UPLOAD.
+
+        :return: Response
+        """
+
+        if parent_lookup_torrent:
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+
+        uploaded_file_obj = request.data['file']
+        uploaded_file_name, uploaded_file_ext = os.path.splitext(uploaded_file_obj.name)
+        uploaded_file_name = '{}{}'.format(slugify(uploaded_file_name), uploaded_file_ext)
+        uploaded_file_upload_path = '{}/{}'.format(self.request.user.username, uploaded_file_name)
+
+        file_obj, created = File.objects.get_or_create(
+            path=uploaded_file_upload_path,
+            defaults={
+                'volume': Volume.UPLOAD,
+                'size': uploaded_file_obj.size
+            }
+        )
+
+        if not created:
+            return Response({
+                'detail': "File already exists."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Link file to authenticated user.
+        request.user.files.add(file_obj)
+
+        # Handle uploaded file.
+        handle_uploaded_file(uploaded_file_obj, file_obj.full_path)
+
+        return Response(status=status.HTTP_201_CREATED)
