@@ -1,11 +1,11 @@
 # kuzgun.io
 
 
-Yours free dockerized online streaming software.
+Dockerized online streaming software.
 
 # Installation
 
-__kuzgun.io__ is designed to run on your server effortlessly.
+__kuzgun.io__ is designed to be run on your server effortlessly.
 Only thing you have to do install [Docker](https://www.docker.com/what-docker) on 
 your server to build and run kuzgun.io.
 
