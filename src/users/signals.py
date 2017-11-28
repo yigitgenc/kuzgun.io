@@ -24,4 +24,7 @@ def create_upload_directory(**kwargs):
     """
 
     if kwargs['created']:
-        os.mkdir('/{}/{}'.format(Volume.UPLOAD.value, kwargs['instance'].username))
+        directory = '/{}/{}'.format(Volume.UPLOAD.value, kwargs['instance'].username)
+
+        if not os.path.exists(directory):
+            os.mkdir('/{}/{}'.format(Volume.UPLOAD.value, kwargs['instance'].username))
