@@ -1,10 +1,11 @@
 from decimal import Decimal
 from unittest.mock import patch
 
+from django.core.files import File as DjangoFile
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIClient
 
 from torrents.models import Torrent
 from ..enums import Volume
@@ -163,3 +164,19 @@ class FileViewSetTests(APITestCase):
             response._headers['content-disposition'][1], "attachment; filename={}".format(self.file.file_name)
         )
         self.assertEqual(response._headers['content-length'][1], str(self.file.size))
+
+    def test_upload_endpoint_that_return_success(self):
+        url = reverse('files:file-upload')
+        filename = 'bahtiyar.jpg'
+
+        client = APIClient()
+        client.login(username='johndoe', password='johndoe')
+        client.credentials(HTTP_CONTENT_DISPOSITION='attachment; filename={}'.format(filename))
+
+        file = DjangoFile(open('/data/{}'.format(filename), 'rb'))
+
+        response = client.post(url, {'name': filename, 'attachment': file})
+
+        file.close()
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
