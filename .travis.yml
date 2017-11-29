@@ -1,0 +1,21 @@
+sudo: required
+
+language: python
+
+services:
+  - docker
+
+env:
+  - COMPOSE_VERSION=1.6.1
+
+before_install:
+ - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+ - chmod +x docker-compose
+ - sudo mv docker-compose /usr/local/bin
+
+before_script: git lfs pull
+
+script:
+  - docker-compose build
+  - docker-compose up -d
+  - docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm --user='root' app python manage.py test --verbosity=2
