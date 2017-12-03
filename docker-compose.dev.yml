@@ -12,6 +12,9 @@ services:
     ports:
       - '9091:9091'
   app:
+    volumes:
+      - './.git:/app/.git'
     command: gunicorn --bind 0.0.0.0:8000 --timeout 1800 --reload kuzgun.wsgi
     environment:
+      GIT_DISCOVERY_ACROSS_FILESYSTEM: 'true'
       DEBUG: 'true'
