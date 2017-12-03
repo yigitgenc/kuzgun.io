@@ -1,6 +1,8 @@
 sudo: required
 
 language: python
+python:
+  - "3.6"
 
 services:
   - docker
@@ -12,10 +14,12 @@ before_install:
  - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
  - chmod +x docker-compose
  - sudo mv docker-compose /usr/local/bin
+ - sudo -H pip install coveralls
 
 before_script: git lfs pull
 
 script:
   - docker-compose build
   - docker-compose up -d
-  - docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm --user='root' app python manage.py test --verbosity=2
+  - docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm --user='root' app coverage run manage.py test --verbosity=2
+  - coveralls --rcfile=./src/.coveragerc
