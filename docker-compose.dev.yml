@@ -13,8 +13,5 @@ services:
       - '9091:9091'
   app:
     command: gunicorn --bind 0.0.0.0:8000 --timeout 1800 --reload kuzgun.wsgi
-    volumes:
-      - './data:/torrents/complete/.test'
-      - './data:/data'
     environment:
       DEBUG: 'true'
