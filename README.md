@@ -1,7 +1,8 @@
 # kuzgun.io
 
-
 Dockerized online streaming software.
+
+[![Build Status](https://travis-ci.org/yigitgenc/kuzgun.io.svg?branch=travis)](https://travis-ci.org/yigitgenc/kuzgun.io)
 
 # Installation
 
@@ -125,6 +126,8 @@ Get Docker first:
 And clone the repo by using `git`:
 ```
 $ git clone git@github.com:yigitgenc/kuzgun.io.git
+$ cd kuzgun.io/
+$ git lfs pull  # This is required to run tests.
 ```
 
 #### Running
@@ -145,6 +148,8 @@ $ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 
 #### Tests
 ```
-$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm app coverage run manage.py test --verbosity=2
+$ docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm --user='app' app coverage run manage.py test --verbosity=2
 ```
+> If you are running tests as a root user in your host; specify `--user='root'` argument to the `docker-compose run` command.
+
 > Coverage report will be generated in `htmlcov` directory.
