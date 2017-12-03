@@ -20,7 +20,7 @@ class FileTaskTests(TestCase):
 
         mock_redis.hgetall.return_value = hgetall_data
 
-        file_mp4 = File.objects.get(volume=Volume.TORRENT, path='.test/drop.mp4')
+        file_mp4 = File.objects.get(volume=Volume.DATA, path='drop.mp4')
 
         mock_hset.assert_has_calls([
             call(MP4_STATUS_HASH.format(file_mp4.pk), 'duration', 6),
@@ -34,7 +34,7 @@ class FileTaskTests(TestCase):
     @patch('files.models.redis')
     @patch('files.tasks.redis.hset')
     def test_convert_to_mp4(self, mock_hset, mock_redis):
-        file = File.objects.create(volume=Volume.TORRENT, path='.test/drop.avi')
+        file = File.objects.create(volume=Volume.DATA, path='drop.avi')
         self.assertIsNone(convert_to_mp4(file.pk))
         self._apply_common_assertions(mock_hset, mock_redis)
 
@@ -47,7 +47,7 @@ class FileTaskTests(TestCase):
             private=False
         )
 
-        file = File.objects.create(volume=Volume.TORRENT, path='.test/drop.avi')
+        file = File.objects.create(volume=Volume.DATA, path='drop.avi')
 
         self.assertIsNone(convert_to_mp4(file.pk, torrent_ids=(torrent_model.pk,)))
         self._apply_common_assertions(mock_hset, mock_redis)

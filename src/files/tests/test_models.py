@@ -22,13 +22,13 @@ class FileModelTests(TestCase):
 
     def test_create_object_with_volume_and_path(self):
         name = '{}-sample'.format(int(time.time()))
-        avi_file = open('/{}/.test/{}.avi'.format(Volume.TORRENT.value, name), 'w+')
+        avi_file = open('/{}/{}.avi'.format(Volume.DATA.value, name), 'w+')
 
-        f = File.objects.create(volume=Volume.TORRENT, path='.test/{}.avi'.format(name))
+        f = File.objects.create(volume=Volume.DATA, path='{}.avi'.format(name))
 
         self.assertEqual(f.name, name)
         self.assertEqual(f.ext, 'avi')
-        self.assertEqual(f.full_path, '/{}/.test/{}.avi'.format(Volume.TORRENT.value, name))
+        self.assertEqual(f.full_path, '/{}/{}.avi'.format(Volume.DATA.value, name))
         self.assertEqual(f.content_type, 'video/x-msvideo')
         self.assertIs(f.size, 0)
         self.assertEqual(f.file_name, '{}.avi'.format(name))
@@ -37,14 +37,14 @@ class FileModelTests(TestCase):
         self.assertEqual(repr(f), '<File: {} (#{})>'.format(f.file_name, f.pk))
 
         avi_file.close()
-        os.remove('/{}/.test/{}.avi'.format(Volume.TORRENT.value, name))
+        os.remove('/{}/{}.avi'.format(Volume.DATA.value, name))
 
     def test_create_object_with_volume_and_path_but_non_exist(self):
-        f = File.objects.create(volume=Volume.TORRENT, path='cr#zy ass\ "f!l3$#!%@.dat.txt')
+        f = File.objects.create(volume=Volume.DATA, path='cr#zy ass\ "f!l3$#!%@.dat.txt')
 
         self.assertEqual(f.name, 'cr#zy ass\ "f!l3$#!%@.dat')
         self.assertEqual(f.ext, 'txt')
-        self.assertEqual(f.full_path, '/{}/cr#zy ass\ "f!l3$#!%@.dat.txt'.format(Volume.TORRENT.value))
+        self.assertEqual(f.full_path, '/{}/cr#zy ass\ "f!l3$#!%@.dat.txt'.format(Volume.DATA.value))
         self.assertEqual(f.content_type, 'text/plain')
         self.assertIs(f.size, 0)
         self.assertEqual(f.file_name, 'cr#zy ass\ "f!l3$#!%@.dat.txt')
@@ -53,9 +53,9 @@ class FileModelTests(TestCase):
 
     def test_create_object_sized_zero_and_set_size(self):
         name = '{}-sample'.format(int(time.time()))
-        txt_file = open('/{}/.test/{}.txt'.format(Volume.TORRENT.value, name), 'w+')
+        txt_file = open('/{}/{}.txt'.format(Volume.DATA.value, name), 'w+')
 
-        f = File.objects.create(volume=Volume.TORRENT, path='.test/{}.txt'.format(name))
+        f = File.objects.create(volume=Volume.DATA, path='{}.txt'.format(name))
 
         f.set_size()
 
@@ -67,4 +67,4 @@ class FileModelTests(TestCase):
         f.set_size()
 
         self.assertGreater(f.size, 0)
-        os.remove('/{}/.test/{}.txt'.format(Volume.TORRENT.value, name))
+        os.remove('/{}/{}.txt'.format(Volume.DATA.value, name))

@@ -128,7 +128,7 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
                 'detail': "There is already a MP4 version of this file."
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        if obj.volume == Volume.TORRENT:
+        if obj.volume in (Volume.TORRENT, Volume.DATA):
             convert_to_mp4.delay(obj.pk, torrent_ids=list(obj.torrent_set.values_list('pk', flat=True)))
         else:
             convert_to_mp4.delay(obj.pk)

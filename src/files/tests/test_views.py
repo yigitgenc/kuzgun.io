@@ -27,8 +27,8 @@ class FileViewSetTests(APITestCase):
             progress=Decimal('3.93')
         )
 
-        self.file = File.objects.create(volume=Volume.TORRENT, path='.test/drop.avi')
-        self.file_mp4 = File.objects.create(volume=Volume.TORRENT, path='.test/drop.mp4')
+        self.file = File.objects.create(volume=Volume.DATA, path='drop.avi')
+        self.file_mp4 = File.objects.create(volume=Volume.DATA, path='drop.mp4')
 
         self.user.torrents.add(self.torrent)
         self.torrent.files.add(self.file, self.file_mp4)
@@ -54,7 +54,7 @@ class FileViewSetTests(APITestCase):
         self.assertIsNotNone(response.data.get('results'))
 
     def test_convert_endpoint_that_return_not_available(self):
-        file = File.objects.create(volume=Volume.TORRENT, path='.test/sample.txt')
+        file = File.objects.create(volume=Volume.DATA, path='sample.txt')
         self.user.files.add(file)
 
         url = reverse('files:file-convert', args=[file.pk])

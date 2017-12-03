@@ -20,8 +20,8 @@ class TorrentTaskTest(TestCase):
     Unit tests for torrent tasks.
     """
     def setUp(self):
-        self.file = File.objects.create(volume=Volume.TORRENT, path='.test/drop.avi')
-        self.file_mp4 = File.objects.create(volume=Volume.TORRENT, path='.test/drop.mp4')
+        self.file = File.objects.create(volume=Volume.DATA, path='drop.avi')
+        self.file_mp4 = File.objects.create(volume=Volume.DATA, path='drop.mp4')
         self.torrent = namedtuple('torrent', ['status', 'progress', 'ratio', 'rateUpload', 'rateDownload', 'stop'])
         self.torrent_model = Torrent.objects.create(
             hash='63b024bf50a50ca95f1b2364a946faf8',
