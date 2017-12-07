@@ -3,6 +3,7 @@
 Dockerized online streaming software.
 
 [![Build Status](https://travis-ci.org/yigitgenc/kuzgun.io.svg?branch=travis)](https://travis-ci.org/yigitgenc/kuzgun.io)
+[![Coverage Status](https://coveralls.io/repos/github/yigitgenc/kuzgun.io/badge.svg?branch=master)](https://coveralls.io/github/yigitgenc/kuzgun.io?branch=master)
 
 # Installation
 
