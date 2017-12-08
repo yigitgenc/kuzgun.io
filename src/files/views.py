@@ -35,25 +35,6 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
     serializer_class = FileSerializer
     parser_classes = (FileUploadParser,)
 
-    @staticmethod
-    def _parent_lookup(parent_lookup_torrent):
-        """
-        This static method tries to get torrent object if the request was came up
-        from parent lookup. (/torrents/) It raises a Http404 exception if it can't
-        find the torrent object.
-
-        :param parent_lookup_torrent: int
-        :return: Response
-        """
-        if parent_lookup_torrent:
-            torrent_model = get_object_or_404(Torrent, pk=parent_lookup_torrent)
-
-            if not torrent_model.finished:
-                return Response({
-                    'detail': "The torrent hasn't finished downloading yet.",
-                    'progress': torrent_model.progress
-                }, status=status.HTTP_400_BAD_REQUEST)
-
     def get_queryset(self):
         """
         Gets files queryset of the user.
@@ -68,10 +49,13 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
 
         :return: Response
         """
-        parent_lookup = self._parent_lookup(parent_lookup_torrent)
 
-        if parent_lookup:
-            return parent_lookup
+        if parent_lookup_torrent:
+            # List files of the torrent.
+            torrent = get_object_or_404(Torrent, pk=parent_lookup_torrent)
+            serializer = self.serializer_class(torrent.files.all(), many=True)
+
+            return Response(serializer.data)
 
         return super(FileViewSet, self).list(request, *args, **kwargs)
 
@@ -81,10 +65,20 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
 
         :return: Response
         """
-        parent_lookup = self._parent_lookup(parent_lookup_torrent)
 
-        if parent_lookup:
-            return parent_lookup
+        if parent_lookup_torrent:
+            # Retrieve a file of the torrent.
+            torrent = get_object_or_404(Torrent, pk=parent_lookup_torrent)
+            if not torrent.finished:
+                return Response({
+                    'detail': "The torrent hasn't finished downloading yet.",
+                    'progress': torrent.progress
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+            file_obj = get_object_or_404(File, torrent__pk=parent_lookup_torrent, pk=kwargs.get('pk'))
+            serializer = self.serializer_class(file_obj)
+
+            return Response(serializer.data)
 
         return super(FileViewSet, self).retrieve(request, *args, **kwargs)
 
@@ -97,10 +91,14 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
 
         :return: Response
         """
-        parent_lookup = self._parent_lookup(parent_lookup_torrent)
 
-        if parent_lookup:
-            return parent_lookup
+        if parent_lookup_torrent:
+            torrent = get_object_or_404(Torrent, pk=parent_lookup_torrent)
+            if not torrent.finished:
+                return Response({
+                    'detail': "The torrent hasn't finished downloading yet.",
+                    'progress': torrent.progress
+                }, status=status.HTTP_400_BAD_REQUEST)
 
         obj = self.get_object()
 
@@ -146,10 +144,14 @@ class FileViewSet(NestedViewSetMixin, RetrieveModelMixin, ListModelMixin, Generi
 
         :return: Response
         """
-        parent_lookup = self._parent_lookup(parent_lookup_torrent)
 
-        if parent_lookup:
-            return parent_lookup
+        if parent_lookup_torrent:
+            torrent = get_object_or_404(Torrent, pk=parent_lookup_torrent)
+            if not torrent.finished:
+                return Response({
+                    'detail': "The torrent hasn't finished downloading yet.",
+                    'progress': torrent.progress
+                }, status=status.HTTP_400_BAD_REQUEST)
 
         obj = self.get_object()
 
