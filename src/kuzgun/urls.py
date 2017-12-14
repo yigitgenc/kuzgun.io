@@ -8,13 +8,17 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.documentation import include_docs_urls
+from rest_framework.permissions import AllowAny
 
 from .views import HomeView
 
 urlpatterns = [
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^admin/', admin.site.urls),
-    url(r'^api/docs/', include_docs_urls(title='Kuzgun.io API', description='Dockerized online streaming software.')),
+    url(r'^api/docs/', include_docs_urls(
+        title='Kuzgun.io API', description='Dockerized online streaming software.',
+        permission_classes=(AllowAny,),
+    )),
     url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/auth/token', obtain_auth_token),
     url(r'^api/users/', include('users.urls', namespace='users')),
