@@ -16,6 +16,7 @@ before_script:
 
 script:
   - docker-compose build
+  - docker-compose up -d
   - docker-compose -f docker-compose.yml -f docker-compose.dev.yml run --rm --user='root' app coverage run manage.py test --verbosity=2
 
 after_success:
