@@ -1,7 +1,7 @@
 {
     "name": "kuzgun.io",
     "version": "1.0.0",
-    "description": "Yours free dockerized online streaming software",
+    "description": "Dockerized online streaming software",
     "main": "src/static/kuzgun/app/app.js",
     "scripts": {
         "build": "webpack-dev-server --config webpack.dev.js",
