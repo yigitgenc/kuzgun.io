@@ -5,6 +5,8 @@ Dockerized online streaming software.
 [![Build Status](https://travis-ci.org/yigitgenc/kuzgun.io.svg?branch=travis)](https://travis-ci.org/yigitgenc/kuzgun.io)
 [![Coverage Status](https://coveralls.io/repos/github/yigitgenc/kuzgun.io/badge.svg?branch=master)](https://coveralls.io/github/yigitgenc/kuzgun.io?branch=master)
 
+:pencil: [Feature roadmap](https://trello.com/b/veC6H110/kuzgunio)
+
 # Installation
 
 __kuzgun.io__ is designed to be run on your server effortlessly.
